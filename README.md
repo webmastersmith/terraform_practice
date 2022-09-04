@@ -1,1 +1,1 @@
-# terraform_practice
+# terraform examples

@@ -1,0 +1,19 @@
+version: 0.2
+
+env:
+  parameter-store:
+    SONARQUBE_TOKEN: "SonarQubeToken"
+    SONARQUBE_ENDPOINT: "SonarQubeEndpoint"
+    SONAR_ORG: "SonarQubeOrg"
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto11
+    commands:
+      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip
+      - unzip sonar-scanner-cli-4.7.0.2747-linux.zip
+      - export PATH=$PATH:./sonar-scanner-4.7.0.2747-linux/bin/
+  build:
+    commands:
+      - sonar-scanner -Dsonar.projectKey=sample-lambda -Dsonar.sources=. -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.organization=${SONAR_ORG} -Dsonar.host.url=${SONARQUBE_ENDPOINT}

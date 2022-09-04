@@ -1,0 +1,4 @@
+.terraform*
+terraform*
+gac.sh
+.ssh

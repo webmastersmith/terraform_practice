@@ -1,0 +1,74 @@
+terraform {
+  required_version = ">= 1.2.8"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.29.0"
+      #Will allow installation of 4.15.1 and 4.15.10 but not 4.16.0
+    }
+
+    random = {
+      source  = "hashicorp/random"
+      version = "3.4.2"
+    }
+  }
+}
+
+resource "random_string" "suffix" {
+  length  = 3
+  special = false
+  upper   = false
+  numeric = false
+  lower   = true
+}
+
+locals {
+  s3_name = "terraform-state-s3-bucket-${random_string.suffix.result}"
+}
+resource "aws_s3_bucket" "terraform-state" {
+  bucket = local.s3_name
+  # object_lock_enabled = true
+}
+# block objects from being public
+resource "aws_s3_bucket_public_access_block" "app" {
+  bucket = aws_s3_bucket.terraform-state.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+resource "aws_s3_bucket_acl" "terraform-state" {
+  bucket = aws_s3_bucket.terraform-state.id
+  acl    = "private"
+}
+
+# versioning
+resource "aws_s3_bucket_versioning" "versioning_terraform-state" {
+  bucket = aws_s3_bucket.terraform-state.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+# get arn
+data "aws_kms_alias" "s3" {
+  name = "alias/terraform_state_key"
+}
+
+# encrypt data with key
+resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state" {
+  bucket = aws_s3_bucket.terraform-state.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = data.aws_kms_alias.s3.arn
+      sse_algorithm     = "aws:kms"
+    }
+  }
+}
+
+output "bucket_domain_name" {
+  value = aws_s3_bucket.terraform-state.bucket_domain_name
+}

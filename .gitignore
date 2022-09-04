@@ -1,0 +1,5 @@
+.ssh
+terraform.tf*
+.terraform*
+.git
+avoid
