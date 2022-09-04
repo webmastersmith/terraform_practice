@@ -30,7 +30,8 @@ resource "aws_route_table" "example" {
   # }
 
   tags = {
-    Name = "my-route-table"
+    "Name"    = "my-route-table"
+    "managed" = "Terraform"
   }
 }
 
@@ -53,9 +54,13 @@ resource "aws_route_table_association" "a" {
 
 # 7. Create a network interface with an ip in the subnet that was created in step 4
 resource "aws_network_interface" "one" {
-  subnet_id       = aws_subnet.subnet-1.id
-  private_ips     = ["10.0.1.50"]
-  security_groups = [aws_security_group.web_traffic.id]
+  subnet_id   = aws_subnet.subnet-1.id
+  private_ips = ["10.0.1.50"]
+  security_groups = [
+    aws_security_group.web_traffic.id,
+    aws_security_group.github_webhook.id,
+    aws_security_group.ssh.id
+  ]
 
   # this can be done in the instance.
   # attachment {

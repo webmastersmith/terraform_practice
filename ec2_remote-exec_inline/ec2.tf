@@ -9,7 +9,8 @@
 # resource block
 resource "aws_instance" "jenkins" {
   ami           = data.aws_ami.al2.id
-  instance_type = "t2.small"
+  instance_type = "t2.micro"
+  # instance_type = "t2.small"
   # security_groups = [aws_security_group.web_traffic.name]
   key_name = aws_key_pair.ssh_access_key.key_name
 
