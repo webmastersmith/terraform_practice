@@ -1,13 +1,15 @@
-provider "aws" {
-  region = "us-east-1"
-}
 
 terraform {
-  backend "s3" {
-    bucket = "devopstestlab"
-    key    = "terraform.tfstate"
-    region = "us-east-1"
-  }
+  # backend "s3" {
+  #   bucket = "devopstestlab"
+  #   key    = "terraform.tfstate"
+  #   region = "us-east-1"
+  # }
+
+}
+
+provider "aws" {
+  region = "us-east-1"
 }
 
 # Data Block
@@ -22,8 +24,4 @@ data "aws_ami" "al2" {
     values = ["hvm"]
   }
   owners = ["amazon"]
-
-
 }
-
-

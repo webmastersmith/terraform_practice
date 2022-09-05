@@ -61,7 +61,7 @@ resource "aws_instance" "jenkins" {
 
       # get ec2 ip and jenkins password to print to logs
       "echo ssh -i ./.ssh/id_rsa.pem ec2-user@${self.public_ip}",
-      "echo Jenkins login: ${self.public_ip}:8080",
+      "echo Jenkins login: http://${self.public_ip}:8080",
       "echo Jenkins code: $(sudo cat /var/lib/jenkins/secrets/initialAdminPassword)"
     ]
   }
