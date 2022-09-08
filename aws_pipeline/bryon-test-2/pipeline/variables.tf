@@ -39,7 +39,11 @@ variable "codecommit_branch" {
   type        = string
 }
 variable "terraform_ver" {
-    description = "Terraform Version number for passing it to codebuild"
-    default     = "1.2.2"
-    type        = string
+  description = "Terraform Version number for passing it to codebuild"
+  default     = "1.2.2"
+  type        = string
+}
+variable "sonar_token" {
+  description = "SonarCloud token number"
+  type        = string
 }

@@ -1,7 +1,7 @@
 locals {
-  env_namespace         = join("_", [var.org_name, var.team_name, var.project_id, var.env["dev"]])
-  general_namespace     = join("_", [var.org_name, var.team_name, var.project_id])
-  s3_bucket_namespace   = join("-", [var.org_name, var.team_name, var.project_id, var.env["dev"]])
+  env_namespace       = join("_", [var.org_name, var.team_name, var.project_id, var.env["dev"]])
+  general_namespace   = join("_", [var.org_name, var.team_name, var.project_id])
+  s3_bucket_namespace = join("-", [var.org_name, var.team_name, var.project_id, var.env["dev"]])
 }
 data "aws_caller_identity" "current" {}
 module "codepipeline" {
@@ -50,4 +50,21 @@ module "ecr" {
   source            = "./modules/ecr"
   general_namespace = local.general_namespace
   env_namespace     = local.env_namespace
+}
+
+# Parameter Store
+resource "aws_ssm_parameter" "sonar_token" {
+  name  = "SonarQubeToken"
+  type  = "String"
+  value = var.sonar_token
+}
+resource "aws_ssm_parameter" "sonar_url" {
+  name  = "SonarQubeEndpoint"
+  type  = "String"
+  value = "https://sonarcloud.io"
+}
+resource "aws_ssm_parameter" "sonar_org" {
+  name  = "SonarQubeOrg"
+  type  = "String"
+  value = "devopstestlab"
 }
