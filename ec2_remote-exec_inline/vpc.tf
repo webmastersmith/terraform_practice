@@ -1,8 +1,10 @@
+# Create vpc
 resource "aws_vpc" "prod-vpc" {
   cidr_block = "10.0.0.0/16"
 
   tags = {
-    Name = "my-vpc"
+    Name      = "my-vpc"
+    "managed" = "Terraform"
   }
 }
 
@@ -11,7 +13,8 @@ resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.prod-vpc.id
 
   tags = {
-    Name = "my-gateway"
+    Name      = "my-gateway"
+    "managed" = "Terraform"
   }
 }
 
@@ -42,7 +45,8 @@ resource "aws_subnet" "subnet-1" {
   availability_zone = "us-east-1a"
 
   tags = {
-    Name = "my-subnet"
+    Name      = "my-subnet"
+    "managed" = "Terraform"
   }
 }
 
