@@ -1,0 +1,11 @@
+---
+- name: shell test -get input back
+  hosts: web
+  become: yes
+  tasks:
+    - name: say hello
+      shell:
+        cmd: whoami
+      register: hello
+    - debug: msg="{{ hello.stdout }}"
+    - debug: msg="{{ hello.stderr }}"

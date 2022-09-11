@@ -61,7 +61,7 @@ resource "aws_network_interface" "one" {
   subnet_id   = aws_subnet.subnet-1.id
   private_ips = ["10.0.1.50"]
   security_groups = [
-    # aws_security_group.web_traffic.id,
+    aws_security_group.web_traffic.id,
     # aws_security_group.github_webhook.id,
     aws_security_group.ssh.id
   ]

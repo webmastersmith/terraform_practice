@@ -1,0 +1,19 @@
+---
+- name: Install web server
+  hosts: web
+  remote_user: ec2-user
+  become: true
+  tasks:
+    - name: install httpd
+      yum:
+        name: httpd
+        state: present
+    - name: start httpd
+      service:
+        name: httpd
+        state: started
+    - name: create content
+      copy:
+        content: "Congrats on installing ansible"
+        dest: /var/www/html/index.html
+# https://stackoverflow.com/questions/31733871/couldnt-access-centos-httpd

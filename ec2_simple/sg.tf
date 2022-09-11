@@ -38,8 +38,8 @@ resource "aws_security_group" "ssh" {
   egress {
     from_port   = 0
     to_port     = 0
-    protocol    = "TCP"
-    cidr_blocks = [var.my_ip]
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
     "Name"    = "SSH MyIP"
@@ -47,33 +47,34 @@ resource "aws_security_group" "ssh" {
   }
 }
 
-# variable "ingressrules" {
-#   type    = list(number)
-#   default = [80, 443]
-# }
-# resource "aws_security_group" "web_traffic" {
-#   name        = "Allow web traffic"
-#   description = "allow your ip and GitHub webhooks for inbound ports and allow everything outbound"
-#   vpc_id      = aws_vpc.prod-vpc.id
+variable "ingressrules" {
+  type    = list(number)
+  default = [80, 443]
+}
+resource "aws_security_group" "web_traffic" {
+  name        = "Allow web traffic"
+  description = "allow your ip and GitHub webhooks for inbound ports and allow everything outbound"
+  vpc_id      = aws_vpc.prod-vpc.id
 
-#   dynamic "ingress" {
-#     iterator = port
-#     for_each = var.ingressrules
-#     content {
-#       from_port   = port.value
-#       to_port     = port.value
-#       protocol    = "TCP"
-#       cidr_blocks = ["0.0.0.0/0"]
-#     }
-#   }
-#   egress {
-#     from_port   = 0
-#     to_port     = 0
-#     protocol    = "-1"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
-#   tags = {
-#     "Name"    = "Web Traffic All IP"
-#     "managed" = "Terraform"
-#   }
-# }
+  dynamic "ingress" {
+    iterator = port
+    for_each = var.ingressrules
+    content {
+      from_port   = port.value
+      to_port     = port.value
+      protocol    = "TCP"
+      cidr_blocks = [var.my_ip]
+      # cidr_blocks = ["0.0.0.0/0"]
+    }
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    "Name"    = "Web Traffic All IP"
+    "managed" = "Terraform"
+  }
+}
