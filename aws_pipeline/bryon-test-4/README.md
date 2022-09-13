@@ -97,6 +97,7 @@ terraform {
 ### Terraform Apply & Git clone Repo
 - cd to `infra`
 ```sh
+terraform init
 terraform apply -auto-approve
 ```
 - copy git address from output of `terraform apply`
