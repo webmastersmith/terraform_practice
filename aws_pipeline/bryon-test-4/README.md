@@ -2,7 +2,7 @@
 
 ## Steps
 - AWS user assigned policy `AdministratorAccess`
-  - github credentials created. (These are attached to user and don't need to be remade every time.)
+  - github credentials created. (These are attached to user and don't need to be re-made every time.)
 
 ## Clone Infra, Lambda
 - git clone [https://github.com/DevOpsTestLab/infra](https://github.com/DevOpsTestLab/infra)
@@ -25,7 +25,7 @@ resource "aws_ssm_parameter" "sonar_url" {
 resource "aws_ssm_parameter" "sonar_org" {
   name  = "SonarQubeOrg"
   type  = "String"
-  value = "devopstestlab"
+  value = "CHANGE-ME-TO-YOUR-ORGANIZATION-NAME"
 }
 ```
 - add sonarcloud token variable to `infra / variable.tf`
@@ -37,9 +37,9 @@ variable "sonar_token" {
 ```
 - add sonarcloud token secret and name variables to `infra / terraform.tfvars`
 ```sh
-org_name   = "revature"
-team_name  = "devops"
-project_id = "1"
+org_name   = "CHANGE-ME"
+team_name  = "CHANGE-ME"
+project_id = "CHANGE-ME"
 region     = "us-east-1"
 
 sonar_token = "g4e................py"
