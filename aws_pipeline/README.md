@@ -1,6 +1,6 @@
 # Cognizant Lab Practice
 
-## Steps
+## IAM
 - AWS user assigned policy `AdministratorAccess`
   - github credentials created. (These are attached to user and don't need to be re-made every time.)
 
@@ -9,7 +9,7 @@
 - git clone [https://github.com/DevOpsTestLab/sample-aws-lambda](https://github.com/DevOpsTestLab/sample-aws-lambda)
 
 ## State -Skip this if you don't want to add Terraform state to S3 bucket.
-- if you want to add state
+- if you want to add state -this should run without having to change anything
   - git clone [https://github.com/webmastersmith/s3.git](https://github.com/webmastersmith/s3.git)
 ```sh
 # cd into the s3 directory
