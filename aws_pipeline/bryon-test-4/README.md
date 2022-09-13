@@ -59,13 +59,7 @@ sonar_token = "g4e................py"
 # line 16
 - docker build -t $IMAGE_URI ./lambda
 ```
-
-2. `buildspec_scan.yaml`
-```sh
-- sonar-scanner -Dsonar.projectKey=CHANGE-ME-TO-PROJECT-NAME -Dsonar.sources=. -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.organization=${SONAR_ORG} -Dsonar.host.url=${SONARQUBE_ENDPOINT}
-```
-
-3. `buildspec_deploy.yaml`
+2. `buildspec_deploy.yaml`
   - move hclq commands into build stage & add -auto-approve to terraform apply
 ```sh
 # move these from runtime-versions to build stage
@@ -74,6 +68,10 @@ sonar_token = "g4e................py"
 
 # add -auto-approve line 27
 terraform apply -auto-approve
+```
+3. `buildspec_scan.yaml`
+```sh
+- sonar-scanner -Dsonar.projectKey=CHANGE-ME-TO-PROJECT-NAME -Dsonar.sources=. -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.organization=${SONAR_ORG} -Dsonar.host.url=${SONARQUBE_ENDPOINT}
 ```
 
 
