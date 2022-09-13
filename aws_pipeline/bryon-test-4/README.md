@@ -71,25 +71,25 @@ terraform apply -auto-approve
 ```
 3. `buildspec_scan.yaml`
 ```sh
-- sonar-scanner -Dsonar.projectKey=CHANGE-ME-TO-PROJECT-NAME -Dsonar.sources=. -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.organization=${SONAR_ORG} -Dsonar.host.url=${SONARQUBE_ENDPOINT}
+- sonar-scanner -Dsonar.projectKey=sample-lambda-1 -Dsonar.sources=. -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.organization=${SONAR_ORG} -Dsonar.host.url=${SONARQUBE_ENDPOINT}
 ```
 
 
-###  sample-aws-lambda folder
+##  sample-aws-lambda folder
 - `sample-aws-lambda / lambda / main.tf`
   - change Docker file requirement.txt to requirements.txt
 ```sh
 RUN pip3 install --no-cache-dir -r requirements.txt
 ```
 - `sample-aws-lambda / versions.tf`
-  -change s3 bucket to the one made.
+  -comment out the s3 bucket until pipeline is created.
 ```sh
 terraform {
-  backend "s3" {
-    bucket = "CHANGE-ME-TO-THE-S3-BUCKET-NAME"
-    key    = "codepipeline-lambda"
-    region = "us-east-1"
-  }
+  # backend "s3" {
+  #   bucket = "CHANGE-ME-TO-THE-S3-BUCKET-NAME"
+  #   key    = "codepipeline-lambda"
+  #   region = "us-east-1"
+  # }
   ...
 }
 ```
@@ -106,6 +106,19 @@ terraform apply -auto-approve
 ```sh
 mv sample-aws-lambda/* AWS-REPO-FOLDER-NAME
 ```
+- uncomment pipeline and change s3 bucket name to your s3 bucket name
+```sh
+terraform {
+  backend "s3" {
+    bucket = "CHANGE-ME-TO-THE-S3-BUCKET-NAME"
+    key    = "codepipeline-lambda"
+    region = "us-east-1"
+  }
+  ...
+}
+
+```
+
 
 # Pipeline teardown
 - manually delete
