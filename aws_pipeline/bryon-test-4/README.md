@@ -1,17 +1,16 @@
 # Cognizant Lab Practice
 
 ## Steps
-- AWS user assigned policy 'AdministratorAccess'
+- AWS user assigned policy `AdministratorAccess`
 - github credentials created.
 
 ## Clone Infra, Lambda
-- git clone https://github.com/DevOpsTestLab/infra
-- git clone https://github.com/DevOpsTestLab/sample-aws-lambda
+- git clone [https://github.com/DevOpsTestLab/infra](https://github.com/DevOpsTestLab/infra)
+- git clone [https://github.com/DevOpsTestLab/sample-aws-lambda](https://github.com/DevOpsTestLab/sample-aws-lambda)
 
 ### Infra Folder
-- Change variables terrafrom.tfvars
-  - add Terraform parameter store variables
-```bash
+- Add Terraform parameter store variables to `infra / terrafrom.tfvars`
+```sh
 # add to infra / main.tf
 resource "aws_ssm_parameter" "sonar_token" {
   name  = "SonarQubeToken"
@@ -28,6 +27,22 @@ resource "aws_ssm_parameter" "sonar_org" {
   type  = "String"
   value = "devopstestlab"
 }
+```
+- add sonarcloud token variable to `infra / variable.tf`
+```sh
+variable "sonar_token" {
+  description = "SonarCloud token"
+  type        = string
+}
+```
+- add sonarcloud token secret and name variables to `infra /terraform.tfvars`
+```sh
+org_name   = "orgname"
+team_name  = "devops"
+project_id = "1"
+region     = "us-east-1"
+
+sonar_token = "g4e................py"
 ```
 - codepipeline
   - add 'force_destroy = true' to s3 bucket
