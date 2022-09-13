@@ -9,7 +9,7 @@
 - git clone [https://github.com/DevOpsTestLab/sample-aws-lambda](https://github.com/DevOpsTestLab/sample-aws-lambda)
 
 ### Infra Folder
-- Add Terraform parameter store variables to `infra / terrafrom.tfvars`
+- Add Terraform parameter store variables to `infra / main.tf`
 ```sh
 # add to infra / main.tf
 resource "aws_ssm_parameter" "sonar_token" {
