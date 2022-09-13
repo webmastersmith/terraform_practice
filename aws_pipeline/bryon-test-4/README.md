@@ -2,7 +2,7 @@
 
 ## Steps
 - AWS user assigned policy `AdministratorAccess`
-- github credentials created.
+  - github credentials created. (These are attached to user and don't need to be remade every time.)
 
 ## Clone Infra, Lambda
 - git clone [https://github.com/DevOpsTestLab/infra](https://github.com/DevOpsTestLab/infra)
@@ -69,6 +69,7 @@ sonar_token = "g4e................py"
 ```sh
 curl -sSLo install.sh https://install.hclq.sh
 sh install.sh -d /usr/local/bin/
+...
 terraform apply -auto-approve
 ```
 
