@@ -24,3 +24,11 @@ Code Build files
 
 - deploy
   - change terraform -terraform -auto-approve
+
+
+# Pipeline teardown
+- manually delete
+  - items in s3 bucket created for lambda.
+    - aws s3 rm --recursive s3://BUCKET-NAME
+  - role create: dev_lambda_role
+  - lambda function
