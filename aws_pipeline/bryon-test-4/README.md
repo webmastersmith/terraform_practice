@@ -35,9 +35,9 @@ variable "sonar_token" {
   type        = string
 }
 ```
-- add sonarcloud token secret and name variables to `infra /terraform.tfvars`
+- add sonarcloud token secret and name variables to `infra / terraform.tfvars`
 ```sh
-org_name   = "orgname"
+org_name   = "revature"
 team_name  = "devops"
 project_id = "1"
 region     = "us-east-1"
@@ -45,8 +45,14 @@ region     = "us-east-1"
 sonar_token = "g4e................py"
 ```
 - codepipeline
-  - add 'force_destroy = true' to s3 bucket
+  - add `force_destroy = true` to `infra / modules / codepipeline / main.tf`
+```sh
+#resource "aws_s3_bucket" "codepipeline_bucket" {
+#  bucket        = "${var.s3_bucket_namespace}-codepipeline-bucket"
+  force_destroy = true
+#}
 
+```
 Code Build files
 - build.yaml
   - infra / modules / codepipeline / templates / build.yaml -cd into lambda
@@ -58,9 +64,12 @@ Code Build files
 
 - deploy
   - change terraform -terraform -auto-approve
-  - move to build stage
-    - curl -sSLo install.sh https://install.hclq.sh
-    - sh install.sh -d /usr/local/bin/
+  - move hclq to build stage & add `-auto-approve`
+```sh
+curl -sSLo install.sh https://install.hclq.sh
+sh install.sh -d /usr/local/bin/
+terraform apply -auto-approve
+```
 
 
 ### Lambda folder
