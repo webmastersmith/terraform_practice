@@ -74,7 +74,7 @@ terraform apply -auto-approve
 ```
 
 
-### Lambda folder
+###  sample-aws-lambda folder
 - `sample-aws-lambda / lambda / main.tf`
   - change Docker file requirement.txt to requirements.txt
 ```sh
@@ -93,6 +93,18 @@ terraform {
 }
 ```
 
+### Terraform Apply & Git clone Repo
+- cd to `infra`
+```sh
+terraform apply -auto-approve
+```
+- copy git address from output of `terraform apply`
+  - cd into parent directory
+  - git clone THE-NEW-REPO-NAME-TERRAFORM-CREATED
+- move contents into aws repo folder
+```sh
+mv sample-aws-lambda/* AWS-REPO-FOLDER-NAME
+```
 
 # Pipeline teardown
 - manually delete
