@@ -44,8 +44,8 @@ region     = "us-east-1"
 
 sonar_token = "g4e................py"
 ```
-- codepipeline
-  - add `force_destroy = true` to `infra / modules / codepipeline / main.tf`
+- `infra / modules / codepipeline / main.tf`
+  - add `force_destroy = true` to s3 bucket
 ```sh
 #resource "aws_s3_bucket" "codepipeline_bucket" {
 #  bucket        = "${var.s3_bucket_namespace}-codepipeline-bucket"
@@ -61,12 +61,11 @@ sonar_token = "g4e................py"
 
 - `buildspec_scan.yaml`
 ```sh
-- sonar-scanner -Dsonar.projectKey=`CHANGE ME TO PROJECT NAME` -Dsonar.sources=. -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.organization=${SONAR_ORG} -Dsonar.host.url=${SONARQUBE_ENDPOINT}
+- sonar-scanner -Dsonar.projectKey=CHANGE-ME-TO-PROJECT-NAME -Dsonar.sources=. -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.organization=${SONAR_ORG} -Dsonar.host.url=${SONARQUBE_ENDPOINT}
 ```
 
-- deploy
-  - change terraform -terraform -auto-approve
-  - move hclq to build stage & add `-auto-approve`
+- `buildspec_deploy.yaml`
+  - move hclq commands into build stage & add -auto-approve to terraform apply
 ```sh
 curl -sSLo install.sh https://install.hclq.sh
 sh install.sh -d /usr/local/bin/
@@ -75,8 +74,23 @@ terraform apply -auto-approve
 
 
 ### Lambda folder
-- change Docker file requirement to requirements
-- versions.tf  -change s3 bucket to the one made.
+- `sample-aws-lambda / lambda / main.tf`
+  - change Docker file requirement.txt to requirements.txt
+```sh
+RUN pip3 install --no-cache-dir -r requirements.txt
+```
+- `sample-aws-lambda / versions.tf`
+  -change s3 bucket to the one made.
+```sh
+terraform {
+  backend "s3" {
+    bucket = "CHANGE-ME-TO-THE-S3-BUCKET-NAME"
+    key    = "codepipeline-lambda"
+    region = "us-east-1"
+  }
+  ...
+}
+```
 
 
 # Pipeline teardown
