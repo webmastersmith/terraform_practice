@@ -11,7 +11,7 @@
 ### Infra Folder
 - Add Terraform parameter store variables to `infra / main.tf`
 ```sh
-# add to infra / main.tf
+# add to end of infra / main.tf
 resource "aws_ssm_parameter" "sonar_token" {
   name  = "SonarQubeToken"
   type  = "String"
@@ -37,10 +37,10 @@ variable "sonar_token" {
 ```
 - add sonarcloud token secret and name variables to `infra / terraform.tfvars`
 ```sh
-org_name   = "CHANGE-ME"
-team_name  = "CHANGE-ME"
-project_id = "CHANGE-ME"
-region     = "us-east-1"
+# org_name   = "CHANGE-ME"
+# team_name  = "CHANGE-ME"
+# project_id = "CHANGE-ME"
+# region     = "us-east-1"
 
 sonar_token = "g4e................py"
 ```
@@ -54,22 +54,25 @@ sonar_token = "g4e................py"
 
 ```
 #### Code Build files `infra / modules / codepipeline / templates`
-- `buildspec_build.yaml`
+1. `buildspec_build.yaml`
 ```sh
+# line 16
 - docker build -t $IMAGE_URI ./lambda
 ```
 
-- `buildspec_scan.yaml`
+2. `buildspec_scan.yaml`
 ```sh
 - sonar-scanner -Dsonar.projectKey=CHANGE-ME-TO-PROJECT-NAME -Dsonar.sources=. -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.organization=${SONAR_ORG} -Dsonar.host.url=${SONARQUBE_ENDPOINT}
 ```
 
-- `buildspec_deploy.yaml`
+3. `buildspec_deploy.yaml`
   - move hclq commands into build stage & add -auto-approve to terraform apply
 ```sh
-curl -sSLo install.sh https://install.hclq.sh
-sh install.sh -d /usr/local/bin/
-...
+# move these from runtime-versions to build stage
+- curl -sSLo install.sh https://install.hclq.sh
+- sh install.sh -d /usr/local/bin/
+
+# add -auto-approve line 27
 terraform apply -auto-approve
 ```
 
