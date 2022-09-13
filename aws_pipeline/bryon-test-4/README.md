@@ -53,14 +53,16 @@ sonar_token = "g4e................py"
 #}
 
 ```
-Code Build files
-- build.yaml
-  - infra / modules / codepipeline / templates / build.yaml -cd into lambda
+#### Code Build files `infra / modules / codepipeline / templates`
+- `buildspec_build.yaml`
+```sh
+- docker build -t $IMAGE_URI ./lambda
+```
 
-- scan.yaml
-  - Sonar setup -copy values
-  - change projectKey=NEW-NAME
-  - add parameter store vars
+- `buildspec_scan.yaml`
+```sh
+- sonar-scanner -Dsonar.projectKey=`CHANGE ME TO PROJECT NAME` -Dsonar.sources=. -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.organization=${SONAR_ORG} -Dsonar.host.url=${SONARQUBE_ENDPOINT}
+```
 
 - deploy
   - change terraform -terraform -auto-approve
