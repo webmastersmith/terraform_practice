@@ -8,6 +8,33 @@
 - git clone [https://github.com/DevOpsTestLab/infra](https://github.com/DevOpsTestLab/infra)
 - git clone [https://github.com/DevOpsTestLab/sample-aws-lambda](https://github.com/DevOpsTestLab/sample-aws-lambda)
 
+## State -Skip this if you don't want to add state.
+- if you want to add state
+  - git clone [https://github.com/webmastersmith/s3.git](https://github.com/webmastersmith/s3.git)
+```sh
+# cd into the s3 directory
+terraform init
+terraform apply -auto-approve
+
+# add this code to infra / versions.tf
+terraform {
+  required_version = ">= 0.15"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.15.1"
+      #Will allow installation of 4.15.1 and 4.15.10 but not 4.16.0
+    }
+  }
+  backend "s3" {
+    bucket = "CHANGE-ME-TO-THE-S3-BUCKET-NAME"
+    key    = "terraform.tfstate"
+    region = "us-east-1"
+  }
+}
+```
+
+
 ### Infra Folder
 - Add Terraform parameter store variables to `infra / main.tf`
 ```sh
@@ -94,7 +121,7 @@ terraform {
 }
 ```
 
-### Terraform Apply & Git clone Repo
+## Terraform Apply & Git clone Repo
 - cd to `infra`
 ```sh
 terraform init
