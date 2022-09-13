@@ -162,6 +162,10 @@ git push
   - role create: YOUR-REPO-NAME_dev_lambda_role
   - lambda function
 - infra folder
-  - terraform destroy -auto-approve
+```sh
+terraform destroy -auto-approve
+```
 - s3 folder
-  - terraform destroy -auto-approve
+```sh
+terraform destroy -auto-approve
+```
