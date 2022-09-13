@@ -8,7 +8,7 @@
 - git clone [https://github.com/DevOpsTestLab/infra](https://github.com/DevOpsTestLab/infra)
 - git clone [https://github.com/DevOpsTestLab/sample-aws-lambda](https://github.com/DevOpsTestLab/sample-aws-lambda)
 
-## State -Skip this if you don't want to add state.
+## State -Skip this if you don't want to add Terraform state to S3 bucket.
 - if you want to add state
   - git clone [https://github.com/webmastersmith/s3.git](https://github.com/webmastersmith/s3.git)
 ```sh
@@ -91,6 +91,7 @@ sonar_token = "g4e................py"
 ```sh
 # move these from runtime-versions to build stage
 - curl -sSLo install.sh https://install.hclq.sh
+# don't forget to add the -d /usr/local/bin
 - sh install.sh -d /usr/local/bin/
 
 # add -auto-approve line 27
@@ -158,7 +159,7 @@ git push
 - manually delete
   - items in s3 bucket created for lambda. (if you didn't add 'force_destroy = true' in pipeline)
     - aws s3 rm --recursive s3://BUCKET-NAME
-  - role create: dev_lambda_role
+  - role create: YOUR-REPO-NAME_dev_lambda_role
   - lambda function
 - infra folder
   - terraform destroy -auto-approve
