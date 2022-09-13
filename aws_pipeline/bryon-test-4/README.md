@@ -32,4 +32,7 @@ Code Build files
     - aws s3 rm --recursive s3://BUCKET-NAME
   - role create: dev_lambda_role
   - lambda function
-- terraform destroy -auto-approve  <!-- infra folder -->
+- infra folder
+  - terraform destroy -auto-approve
+- s3 folder
+  - terraform destroy -auto-approve
