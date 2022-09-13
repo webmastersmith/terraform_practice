@@ -38,6 +38,8 @@ locals {
 resource "aws_s3_bucket" "terraform-state" {
   bucket = local.s3_name
   # object_lock_enabled = true
+  # allow terraform to destroy bucket without having to delete contents
+  force_destroy = true
 }
 # block all objects from being public
 resource "aws_s3_bucket_public_access_block" "app" {
