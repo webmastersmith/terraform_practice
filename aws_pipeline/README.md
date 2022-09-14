@@ -99,7 +99,7 @@ terraform apply -auto-approve
 ```
 3. `buildspec_scan.yaml`
 ```sh
-- sonar-scanner -Dsonar.projectKey=sample-lambda-1 -Dsonar.sources=. -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.organization=${SONAR_ORG} -Dsonar.host.url=${SONARQUBE_ENDPOINT}
+- sonar-scanner -Dsonar.projectKey=CHANGE-ME-PROJECT-NAME -Dsonar.sources=. -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.organization=${SONAR_ORG} -Dsonar.host.url=${SONARQUBE_ENDPOINT}
 ```
 
 
