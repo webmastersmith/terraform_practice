@@ -114,7 +114,7 @@ sonar_token = "g4e................py"
 terraform apply -auto-approve
 ```
 3. `buildspec_scan.yaml`
-  - change projectKey to your SonarCloud project name
+  - change `-Dsonar.projectKey` to your SonarCloud project name
 ```sh
 - sonar-scanner -Dsonar.projectKey=CHANGE-ME-PROJECT-NAME -Dsonar.sources=. -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.organization=${SONAR_ORG} -Dsonar.host.url=${SONARQUBE_ENDPOINT}
 ```
