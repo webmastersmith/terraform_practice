@@ -140,14 +140,14 @@ terraform {
 terraform init
 terraform apply -auto-approve
 ```
-- copy git address from output of `terraform apply`
+- copy 'codecommit' output from `terraform apply`. This is the git clone address.
   - cd into parent directory
   - git clone THE-NEW-REPO-NAME-TERRAFORM-CREATED
 - move contents into aws repo folder
 ```sh
 mv sample-aws-lambda/* AWS-REPO-FOLDER-NAME
 ```
-- uncomment pipeline and change s3 bucket name to your s3 bucket name
+- uncomment backend and change s3 bucket name to your s3 bucket name `Your-Repo-Name / versions.tf`
 ```sh
 terraform {
   backend "s3" {
