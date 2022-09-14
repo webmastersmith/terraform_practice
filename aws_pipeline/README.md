@@ -92,7 +92,7 @@ sonar_token = "g4e................py"
 # move these from runtime-versions to build stage
 - curl -sSLo install.sh https://install.hclq.sh
 # don't forget to add the -d /usr/local/bin/
-- sh install.sh -d /usr/local/bin/
+- sh install.sh -d /usr/bin/
 
 # add -auto-approve line 27
 terraform apply -auto-approve
