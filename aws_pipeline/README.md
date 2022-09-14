@@ -102,13 +102,13 @@ sonar_token = "g4e................py"
 
 # only use this if your having problems with the code above
 # move these from runtime-versions to build stage
-- curl -sSLo install.sh https://install.hclq.sh
-- echo "$(env | sort)"
-- export ver=0
-- echo "$(env)" | grep ver
-- sh install.sh -d /usr/bin/
-- sh install.sh -d /usr/local/bin/
-- sh install.sh -d /usr/sbin/
+# - curl -sSLo install.sh https://install.hclq.sh
+# - echo "$(env | sort)"
+# - export ver=0
+# - echo "$(env)" | grep ver
+# - sh install.sh -d /usr/bin/
+# - sh install.sh -d /usr/local/bin/
+# - sh install.sh -d /usr/sbin/
 
 # add -auto-approve line 27
 terraform apply -auto-approve
