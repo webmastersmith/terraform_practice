@@ -90,14 +90,14 @@ sonar_token = "g4e................py"
   - move hclq commands into build stage & add -auto-approve to terraform apply
 ```sh
 # Matt way of fixing it. Should work fine this way.
-    # runtime-versions:
-    #   python: 3.7
+    runtime-versions:
+      python: 3.7
       golang: 1.14
-    # commands:
-    #   - tf_version=$TERRAFORM_VERSION
-    #   - wget https://releases.hashicorp.com/terraform/"$TERRAFORM_VERSION"/terraform_"$TERRAFORM_VERSION"_linux_amd64.zip
-    #   - unzip terraform_"$TERRAFORM_VERSION"_linux_amd64.zip
-    #   - mv terraform /usr/local/bin/
+    commands:
+      - tf_version=$TERRAFORM_VERSION
+      - wget https://releases.hashicorp.com/terraform/"$TERRAFORM_VERSION"/terraform_"$TERRAFORM_VERSION"_linux_amd64.zip
+      - unzip terraform_"$TERRAFORM_VERSION"_linux_amd64.zip
+      - mv terraform /usr/local/bin/
       - go get -u github.com/mattolenik/hclq
 
 # only use this if your having problems with the code above
