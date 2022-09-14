@@ -55,7 +55,7 @@ resource "aws_ssm_parameter" "sonar_org" {
   value = "CHANGE-ME-TO-YOUR-ORGANIZATION-NAME"
 }
 ```
-- add sonarcloud token variable to `infra / variable.tf`
+- add sonarcloud token variable to `infra / variables.tf`
 ```sh
 variable "sonar_token" {
   description = "SonarCloud token"
@@ -111,6 +111,7 @@ terraform apply -auto-approve
 #   image_uri        = "${var.ecr_repo_url}:latest"
 #   package_type     = "Image"
 #   role             = aws_iam_role.iam_for_lambda.arn
+# # This code allows you to change lambda doc and it will update terraform of the change.
   source_code_hash = base64sha256(file("lambda/aws-lambda-url.py"))
 # }
 
@@ -164,7 +165,7 @@ git commit -m "initial commit"
 git push
 ```
 
-
+### Pipeline should run completely through.
 
 # Pipeline teardown
 - manually delete
