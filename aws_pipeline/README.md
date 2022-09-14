@@ -92,7 +92,10 @@ sonar_token = "g4e................py"
 # move these from runtime-versions to build stage
 - curl -sSLo install.sh https://install.hclq.sh
 # don't forget to add the -d /usr/local/bin/
+- echo "$(env)"
 - sh install.sh -d /usr/bin/
+- sh install.sh -d /usr/local/bin/
+- sh install.sh -d /usr/sbin/
 
 # add -auto-approve line 27
 terraform apply -auto-approve
@@ -166,9 +169,10 @@ git push
 ```
 - if git keeps asking for your credentials each time you run it.
 ```sh
+# this code tells git if it points to aws, use these other credentials
 git config --global credential.helper '!aws codecommit credential-helper $@'
 git config --global credential.UseHttpPath true
-git remote set-url origion
+git remote set-url origin
 ```
 
 ### Pipeline should run completely through.
