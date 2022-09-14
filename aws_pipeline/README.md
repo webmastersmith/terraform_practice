@@ -116,7 +116,7 @@ terraform apply -auto-approve
 # }
 
 ```
-- `sample-aws-lambda / lambda / main.tf`
+- `sample-aws-lambda / lambda / Dockerfile`
   - change Docker file requirement.txt to requirements.txt
 ```sh
 RUN pip3 install --no-cache-dir -r requirements.txt
