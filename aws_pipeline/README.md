@@ -164,6 +164,12 @@ git add .
 git commit -m "initial commit"
 git push
 ```
+- if git keeps asking for your credentials each time you run it.
+```sh
+git config --global credential.helper '!aws codecommit credential-helper $@'
+git config --global credential.UseHttpPath true
+git remote set-url origion
+```
 
 ### Pipeline should run completely through.
 
