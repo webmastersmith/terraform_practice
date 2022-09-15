@@ -192,11 +192,11 @@ git remote set-url origin
 ### Pipeline should run completely through.
 
 # Pipeline teardown
-- manually delete
-  - items in s3 bucket created for lambda. (if you didn't add 'force_destroy = true' in pipeline)
-    - aws s3 rm --recursive s3://BUCKET-NAME
-  - role create: YOUR-REPO-NAME_dev_lambda_role
-  - lambda function
+- Your-repo-folder-with-lambda-in-it
+```sh
+terraform init
+terraform destroy -auto-approve
+```
 - infra folder
 ```sh
 terraform destroy -auto-approve
