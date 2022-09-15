@@ -123,14 +123,14 @@ terraform apply -auto-approve
 ##  sample-aws-lambda folder
 - `sample-aws-lambda / main.tf`
 ```sh
-# resource "aws_lambda_function" "main" {
-#   function_name    = "${var.env_namespace}_lambda"
-#   image_uri        = "${var.ecr_repo_url}:latest"
-#   package_type     = "Image"
-#   role             = aws_iam_role.iam_for_lambda.arn
-# # This code allows you to change lambda doc and it will update terraform of the change.
+resource "aws_lambda_function" "main" {
+  function_name    = "${var.env_namespace}_lambda"
+  image_uri        = "${var.ecr_repo_url}:latest"
+  package_type     = "Image"
+  role             = aws_iam_role.iam_for_lambda.arn
+# This code allows you to change lambda doc and it will update terraform of the change.
   source_code_hash = base64sha256(file("lambda/aws-lambda-url.py"))
-# }
+}
 
 ```
 - `sample-aws-lambda / lambda / Dockerfile`
