@@ -37,7 +37,7 @@ locals {
 # create bucket
 resource "aws_s3_bucket" "terraform-state" {
   bucket = local.s3_name
-  # allow terraform to destroy bucket without having to delete contents
+  # allow terraform to destroy bucket with contents
   force_destroy = true
 
   # object_lock_enabled = true
@@ -59,7 +59,7 @@ resource "aws_s3_bucket_acl" "terraform-state" {
   acl    = "private"
 }
 
-# versioning
+# ## versioning
 # resource "aws_s3_bucket_versioning" "versioning_terraform-state" {
 #   bucket = aws_s3_bucket.terraform-state.id
 #   versioning_configuration {
@@ -68,12 +68,12 @@ resource "aws_s3_bucket_acl" "terraform-state" {
 # }
 
 # ## This if for encrypting bucket contents. Must have an KMS key already made.
-# get arn
+# ## get arn
 # data "aws_kms_alias" "s3" {
 #   name = "alias/CHANGE-ME-TO-YOUR-KMS-KEY-NAME"
 # }
 
-# encrypt data with key
+# ## encrypt data with key
 # resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state" {
 #   bucket = aws_s3_bucket.terraform-state.id
 
