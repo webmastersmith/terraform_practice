@@ -26,6 +26,25 @@ resource "aws_instance" "jenkins" {
   # user_data = data.template_file.init.rendered
   # user_data = file("install-jenkins.sh")
 
+
+  connection {
+    type        = "ssh"
+    host        = self.public_ip
+    user        = "ec2-user"
+    private_key = file("./.ssh/id_rsa.pem") # <your keypair name here>
+  }
+  # # file is the same as remote-exec. Logs are streamed to local stdout.
+  # provisioner "file" {
+  #   source = "./install-jenkins.sh"
+  #   destination = "/home/ec2-user/install-jenkins.sh"
+  # }
+  # provisioner "remote-exec" {
+  #   inline = [
+  #     "chmod +x /home/ec2-user/install-jenkins.sh",
+  #     "sudo /home/ec2-user/install-jenkins.sh",
+  #     "exit"
+  #   ]
+  # }
   # you are ec2-user
   provisioner "remote-exec" {
     inline = [
@@ -66,12 +85,6 @@ resource "aws_instance" "jenkins" {
     ]
   }
 
-  connection {
-    type        = "ssh"
-    host        = self.public_ip
-    user        = "ec2-user"
-    private_key = file("./.ssh/id_rsa.pem") # <your keypair name here>
-  }
 
   tags = {
     "Name"    = "Jenkins"
