@@ -1,0 +1,31 @@
+---
+- name: Ubuntu Apache Setup
+  hosts: all
+  become: True
+  tasks:
+    - name: check whoiam
+      shell:
+        cmd: whoami
+      register: whoiam
+    - debug: msg="{{ whoiam.stdout }}"
+    - debug: msg="{{ whoiam.stderr }}"
+
+    - name: install apache2
+      apt: name=apache2 state=present update_cache=yes
+
+    # used command instead of service due to systemd not running on docker.
+    - name: start apache2
+      command: systemctl restart apache2
+
+    - name: create group terraform
+      group:
+        name: terraform
+        state: present
+    
+    - name: create user backup-user
+      user:
+        name: backup-user
+        # shell: /bin/bash
+        groups: sudo,terraform
+        create_home: no
+

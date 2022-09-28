@@ -56,7 +56,7 @@ resource "aws_default_route_table" "main_vpc_default_rt" {
 
 variable "ingressrules" {
   type    = list(number)
-  default = [22, 25, 80]
+  default = [22, 80]
 }
 
 # Default Security Group
@@ -71,6 +71,7 @@ resource "aws_default_security_group" "default_sec_group" {
       to_port     = port.value
       protocol    = "TCP"
       cidr_blocks = ["96.45.235.77/32"]
+      # cidr_blocks = ["0.0.0.0/0"]
     }
   }
 
@@ -122,7 +123,9 @@ data "aws_ami" "latest_ubuntu_server" {
   }
 }
 
-resource "aws_instance" "temp" {
+
+
+resource "aws_instance" "apache2" {
   # ami           = "ami-0f924dc71d44d23e2"
   ami           = data.aws_ami.latest_ubuntu_server.id
   instance_type = "t2.micro"
@@ -133,6 +136,20 @@ resource "aws_instance" "temp" {
   # create copies
   # count = 2
 
+  # Run remote-exec first because will loop till ec2 instance is ready, otherwise local-exec will fail to connect.
+  provisioner "remote-exec" {
+    script = "./apache2.sh"
+  }
+  connection {
+    type        = "ssh"
+    host        = self.public_ip
+    user        = "ubuntu"
+    private_key = file("./.ssh/id_rsa.pem") # <your keypair name here>
+  }
+  provisioner "local-exec" {
+    command    = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ubuntu -i '${self.public_ip},' --private-key ${aws_key_pair.ssh_access_key.key_name}.pem playbook.yaml"
+    on_failure = continue
+  }
 
   network_interface {
     network_interface_id = aws_network_interface.one.id
@@ -140,7 +157,7 @@ resource "aws_instance" "temp" {
   }
 
   tags = {
-    "Name"    = "Jenkins"
+    "Name"    = "Apache2"
     "managed" = "Terraform"
     # "Name" = "Jenkins_Server${count.index}"
 
@@ -155,10 +172,10 @@ resource "aws_key_pair" "ssh_access_key" {
 
 
 output "public_ip" {
-  value = aws_instance.temp.public_ip
+  value = aws_instance.apache2.public_ip
 }
 output "private_ip" {
-  value = aws_instance.temp.private_ip
+  value = aws_instance.apache2.private_ip
 }
 
 output "ami" {
