@@ -1,12 +1,15 @@
 terraform {
-  required_version = ">= 1.2.8"
+  required_version = ">= 1.3.0"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.29.0"
+      version = "~> 4.32.0"
       #Will allow installation of 4.29.1 and 4.29.10 but not 4.30.0
     }
-
+    archive = {
+      source  = "hashicorp/archive"
+      version = "~> 2.2.0"
+    }
     random = {
       source  = "hashicorp/random"
       version = "3.4.2"
@@ -32,10 +35,9 @@ resource "random_string" "suffix" {
 
 # create aws bucket name with random string for uniqueness
 locals {
-  s3_name = "terraform-state-s3-bucket-${random_string.suffix.result}"
+  s3_name = "terraform-functions-${random_string.suffix.result}"
 }
 # create bucket
-# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket
 resource "aws_s3_bucket" "terraform-state" {
   bucket = local.s3_name
   # allow terraform to destroy bucket with contents
@@ -87,9 +89,78 @@ resource "aws_s3_bucket_acl" "terraform-state" {
 # }
 # ## End bucket encryption
 
+# add object to s3 through terraform
+data "archive_file" "lambda_hello_bryon" {
+  type = "zip"
+
+  source_dir  = "${path.module}/hello-bryon"
+  output_path = "${path.module}/hello-bryon.zip"
+}
+
+resource "aws_s3_object" "lambda_hello_bryon" {
+  bucket = aws_s3_bucket.terraform-state.id
+
+  key    = "hello-bryon.zip"
+  source = data.archive_file.lambda_hello_bryon.output_path
+
+  etag = filemd5(data.archive_file.lambda_hello_bryon.output_path)
+}
+
+
+# create the lambda function
+resource "aws_lambda_function" "hello_bryon" {
+  function_name = "HelloBryon"
+
+  s3_bucket = aws_s3_bucket.terraform-state.id
+  s3_key    = aws_s3_object.lambda_hello_bryon.key
+
+  runtime = "nodejs16.x"
+  handler = "hello.handler"
+
+  source_code_hash = data.archive_file.lambda_hello_bryon.output_base64sha256
+
+  role = aws_iam_role.lambda_exec.arn
+}
+
+resource "aws_cloudwatch_log_group" "hello_bryon" {
+  name = "/aws/lambda/${aws_lambda_function.hello_bryon.function_name}"
+
+  retention_in_days = 30
+}
+
+resource "aws_iam_role" "lambda_exec" {
+  name = "serverless_lambda"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Sid    = ""
+      Principal = {
+        Service = "lambda.amazonaws.com"
+      }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_policy" {
+  role       = aws_iam_role.lambda_exec.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+output "function_name" {
+  description = "Name of the Lambda function."
+
+  value = aws_lambda_function.hello_bryon.function_name
+}
+
+
 output "bucket_name" {
   value = aws_s3_bucket.terraform-state.id
 }
 output "bucket_domain_name" {
   value = "https://${aws_s3_bucket.terraform-state.bucket_domain_name}"
 }
+
