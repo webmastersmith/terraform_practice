@@ -3,3 +3,5 @@ terraform.tf*
 .terraform*
 .git
 avoid
+cert_challenge
+
