@@ -21,29 +21,20 @@ terraform {
   # }
 }
 
-# create random string
-resource "random_string" "suffix" {
-  length  = 4
-  special = false
-  upper   = false
-  numeric = false
-  lower   = true
-}
-# resource "random_pet" "name" {
-#   length = 1 # how many words, separated by -
-# }
-
-locals {
-  s3_name = "my-s3-bucket-${random_string.suffix.result}"
-  region  = "us-east-2"
-}
-
 provider "aws" {
-  region = local.region
+  region = "us-east-2"
 }
 
+# create random string
+resource "random_pet" "name" {
+  length = 1 # how many words, separated by -
+}
 
 # create aws bucket name with random string for uniqueness
+locals {
+  s3_name = "my-s3-bucket-${random_pet.name.id}"
+}
+
 # create bucket
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket
 resource "aws_s3_bucket" "terraform-state" {
